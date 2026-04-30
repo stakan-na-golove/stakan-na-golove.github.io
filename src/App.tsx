@@ -495,6 +495,7 @@ const REGIONS_DATA = [
   { id: 85, name: 'Чукотский автономный округ', district: 'Дальневосточный', code: 'RU-CHU' },
 ];
 
+<<<<<<< HEAD
 // Federal Districts data
 const DISTRICTS_DATA = [
   { id: 1, name: 'Центральный', regionIds: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18] },
@@ -517,6 +518,8 @@ DISTRICTS_DATA.forEach(d => {
   d.regionIds.forEach(rId => { regionToDistrictId[rId] = d.id; });
 });
 
+=======
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
 // Region mapping
 const createRegionMapping = (): Map<string, number> => {
   const mapping = new Map<string, number>();
@@ -1040,10 +1043,13 @@ const App: React.FC = () => {
   const [currentTheme, setCurrentTheme] = useState<ThemeType>(savedSettings?.currentTheme || 'original');
   const [materialAccent, setMaterialAccent] = useState(savedSettings?.materialAccent || '#6750a4');
   const [data, setData] = useState<{ [key: number]: number }>({});
+<<<<<<< HEAD
   const [districtData, setDistrictData] = useState<{ [key: number]: number }>({});
   const [tableMode, setTableMode] = useState<'regions' | 'districts'>('regions');
   const [tableSwitching, setTableSwitching] = useState(false);
   const districtDataRef = useRef<{ [key: number]: number }>({});
+=======
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
   const [mapLoaded, setMapLoaded] = useState(false);
   void mapLoaded;
   const [mapError, setMapError] = useState<string | null>(null);
@@ -1054,6 +1060,7 @@ const App: React.FC = () => {
   const currentColorsRef = useRef<ThemeColors>(themes.original);
   const themeButtonRef = useRef<HTMLDivElement>(null);
   
+<<<<<<< HEAD
   // Mobile detection and responsive state
   const [isMobile, setIsMobile] = useState(false);
   const [mobileView, setMobileView] = useState<'map' | 'table'>('map');
@@ -1069,6 +1076,8 @@ const App: React.FC = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
+=======
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
   const dataRef = useRef<{ [key: number]: number }>({});
   
   // Color settings - load from localStorage
@@ -1205,10 +1214,13 @@ const App: React.FC = () => {
   useEffect(() => {
     dataRef.current = data;
   }, [data]);
+<<<<<<< HEAD
 
   useEffect(() => {
     districtDataRef.current = districtData;
   }, [districtData]);
+=======
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
   
   useEffect(() => {
     const handleScroll = () => {
@@ -1431,6 +1443,7 @@ const App: React.FC = () => {
         const tooltip = document.getElementById('tooltip');
         if (tooltip) {
           const region = getRegionData(d.properties.name);
+<<<<<<< HEAD
           
           // Show different info based on table mode
           const currentMode = tableMode;
@@ -1455,6 +1468,15 @@ const App: React.FC = () => {
           }
           
           tooltip.innerHTML = tooltipHtml;
+=======
+          const value = region ? dataRef.current[region.id] : undefined;
+          
+          tooltip.innerHTML = `
+            <div><strong>${region ? region.name : d.properties.name}</strong></div>
+            <div style="font-size: 12px; margin-top: 4px;">Значение: ${value !== undefined && value !== null && !isNaN(value) ? value : 'Нет данных'}</div>
+            ${!region ? `<div style="font-size: 10px; color: #ff6b6b; margin-top: 4px;">GeoJSON: "${d.properties.name}"</div>` : ''}
+          `;
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
           tooltip.style.display = 'block';
           tooltip.style.left = (event.pageX + 10) + 'px';
           tooltip.style.top = (event.pageY - 10) + 'px';
@@ -1464,6 +1486,7 @@ const App: React.FC = () => {
       .on('click', (_event: any, d: any) => {
         const region = getRegionData(d.properties.name);
         if (region) {
+<<<<<<< HEAD
           if (tableMode === 'districts') {
             const dId = regionToDistrictId[region.id];
             if (dId) {
@@ -1479,6 +1502,9 @@ const App: React.FC = () => {
           } else {
             scrollToRegion(region.id);
           }
+=======
+          scrollToRegion(region.id);
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
         }
       })
       .on('mouseout', function() {
@@ -1522,6 +1548,7 @@ const App: React.FC = () => {
       .text('Карта России - Данные из таблицы');
   };
 
+<<<<<<< HEAD
   // District mode handlers
   const handleDistrictValueChange = (districtId: number, value: string) => {
     const numValue = parseFloat(value);
@@ -1593,6 +1620,8 @@ const App: React.FC = () => {
     }
   };
 
+=======
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
   const getColor = (value: number | undefined) => {
     if (value === undefined || value === null || isNaN(value)) {
       return colors.regionDefault;
@@ -1780,6 +1809,7 @@ const App: React.FC = () => {
     svg.selectAll<SVGPathElement, any>('path').attr('fill', function(d: any) {
       if (!d || !d.properties) return colors.regionDefault;
       const region = getRegionData(d.properties.name);
+<<<<<<< HEAD
       if (!region) return colors.regionDefault;
       
       if (tableMode === 'districts') {
@@ -1793,21 +1823,34 @@ const App: React.FC = () => {
       }
     });
   }, [debouncedMinColor, debouncedMidColor, debouncedMaxColor, useMidpoint, colors.regionDefault, tableMode]);
+=======
+      const value = region ? dataRef.current[region.id] : undefined;
+      return getColor(value);
+    });
+  }, [debouncedMinColor, debouncedMidColor, debouncedMaxColor, useMidpoint, colors.regionDefault]);
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
 
   useEffect(() => {
     updateMapColors();
   }, [debouncedMinColor, debouncedMidColor, debouncedMaxColor, useMidpoint, updateMapColors]);
 
   useEffect(() => {
+<<<<<<< HEAD
     if (Object.keys(data).length > 0 || tableMode === 'districts') {
+=======
+    if (Object.keys(data).length > 0) {
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
       updateMapColors();
     }
   }, [data, updateMapColors]);
 
+<<<<<<< HEAD
   useEffect(() => {
     updateMapColors();
   }, [districtData, tableMode, updateMapColors]);
 
+=======
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
   const saveSvgToPng = (svgElement: SVGSVGElement, fileName: string) => {
     const svgData = new XMLSerializer().serializeToString(svgElement);
     const canvas = document.createElement('canvas');
@@ -2066,6 +2109,7 @@ const App: React.FC = () => {
     return base;
   };
 
+<<<<<<< HEAD
   // Mobile bottom navigation component
   const MobileBottomNav = () => (
     <div style={{
@@ -2329,6 +2373,40 @@ const App: React.FC = () => {
             
             <h1 style={{ 
               fontSize: isMobile ? '24px' : (currentTheme === 'material' ? '36px' : '30px'), 
+=======
+  return (
+    <ThemeContext.Provider value={{ theme: currentTheme, setTheme: setCurrentTheme, colors }}>
+      <div style={getPageStyle()}>
+        {/* Theme menu removed from here - moved to header */}
+
+        <div style={{ maxWidth: '1152px', margin: '0 auto', padding: '48px 16px' }}>
+          <header style={{ textAlign: 'center', marginBottom: '48px', position: 'relative' }}>
+            {/* Theme button in header - static, not moving with scroll */}
+            <div 
+              ref={themeButtonRef}
+              style={{ 
+                position: 'absolute', 
+                right: 0, 
+                top: 0,
+              }}
+            >
+              <ThemeButton 
+                isOpen={themeMenuOpen} 
+                onClick={() => setThemeMenuOpen(!themeMenuOpen)} 
+              />
+            </div>
+            <ThemeMenu 
+              isOpen={themeMenuOpen} 
+              isClosing={themeMenuClosing}
+              onClose={handleCloseThemeMenu}
+              materialAccent={materialAccent}
+              setMaterialAccent={setMaterialAccent}
+              anchorRef={themeButtonRef}
+            />
+            
+            <h1 style={{ 
+              fontSize: currentTheme === 'material' ? '36px' : '30px', 
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
               fontWeight: currentTheme === 'material' ? 400 : currentTheme === 'apple' ? 600 : 300, 
               letterSpacing: currentTheme === 'material' ? '-0.25px' : '-0.5px', 
               color: colors.textPrimary, 
@@ -2337,6 +2415,7 @@ const App: React.FC = () => {
             }}>
               Карта регионов России
             </h1>
+<<<<<<< HEAD
             {!isMobile && (
               <p style={{ 
                 color: colors.textSecondary, 
@@ -2357,6 +2436,18 @@ const App: React.FC = () => {
             padding: isMobile ? '10px' : '32px',
             marginBottom: isMobile ? '16px' : '48px',
           }}>
+=======
+            <p style={{ 
+              color: colors.textSecondary, 
+              fontWeight: 300,
+              fontSize: currentTheme === 'material' ? '16px' : '14px',
+            }}>
+              Визуализация региональных данных
+            </p>
+          </header>
+
+          <div style={getCardStyle()}>
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
             {/* Decorative wood grain overlay for realistic theme */}
             {currentTheme === 'realistic' && (
               <div style={{
@@ -2378,8 +2469,11 @@ const App: React.FC = () => {
               }} />
             )}
             
+<<<<<<< HEAD
             {/* Header - desktop only */}
             {!isMobile && (
+=======
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
             <div style={{ 
               display: 'flex', 
               justifyContent: 'space-between', 
@@ -2426,9 +2520,14 @@ const App: React.FC = () => {
                 </button>
               </div>
             </div>
+<<<<<<< HEAD
             )}
             
             {mapError && !isMobile && (
+=======
+            
+            {mapError && (
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
               <div style={{ 
                 background: currentTheme === 'dark' ? '#1e293b' : '#f8fafc', 
                 border: `1px solid ${colors.tableBorder}`, 
@@ -2442,7 +2541,11 @@ const App: React.FC = () => {
               </div>
             )}
             
+<<<<<<< HEAD
             {unmappedRegions.length > 0 && !isMobile && (
+=======
+            {unmappedRegions.length > 0 && (
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
               <div style={{ 
                 background: currentTheme === 'dark' ? '#422006' : '#fef3c7', 
                 border: '1px solid #f59e0b', 
@@ -2461,6 +2564,7 @@ const App: React.FC = () => {
               </div>
             )}
 
+<<<<<<< HEAD
             {/* Mobile: Save button only */}
             {isMobile && (
               <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
@@ -2498,6 +2602,9 @@ const App: React.FC = () => {
 
             {/* Desktop: Full control panel */}
             <div style={{ display: isMobile ? 'none' : 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '32px', position: 'relative' }}>
+=======
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '32px', position: 'relative' }}>
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
               {/* Color Scheme Button */}
               <div style={{ position: 'relative' }}>
                 <button
@@ -2690,19 +2797,27 @@ const App: React.FC = () => {
               </button>
             </div>
 
+<<<<<<< HEAD
             <div style={{
               ...getMapContainerStyle(),
             }}>
+=======
+            <div style={getMapContainerStyle()}>
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
               <svg
                 ref={svgRef}
                 width="900"
                 height="600"
+<<<<<<< HEAD
                 style={{ 
                   width: '100%', 
                   height: 'auto', 
                   display: 'block', 
                   maxHeight: isMobile ? '75vh' : '65vh',
                 }}
+=======
+                style={{ width: '100%', height: 'auto', display: 'block', maxHeight: '65vh' }}
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
               ></svg>
               
               {/* Zoom controls - unified style for all themes */}
@@ -2869,25 +2984,37 @@ const App: React.FC = () => {
               
               <div style={{
                 position: 'absolute',
+<<<<<<< HEAD
                 bottom: isMobile ? 12 : 24,
                 left: isMobile ? 12 : 24,
+=======
+                bottom: 24,
+                left: 24,
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
                 fontSize: 10,
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
                 color: colors.textMuted,
                 fontWeight: 500,
+<<<<<<< HEAD
                 display: isMobile ? 'none' : 'block',
+=======
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
               }}>
                 Масштаб: Колесико / Перемещение: Drag
               </div>
             </div>
           </div>
+<<<<<<< HEAD
           </div>
 
           {/* Table section - hidden on mobile when map is selected */}
           <div style={{ 
             display: isMobile && mobileView !== 'table' ? 'none' : 'block',
           }}>
+=======
+
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
           <div id="data-table" style={{
             background: colors.cardBg,
             borderRadius: currentTheme === 'material' ? '28px' : currentTheme === 'apple' ? '20px' : '12px',
@@ -2918,13 +3045,18 @@ const App: React.FC = () => {
             )}
             
             <div style={{
+<<<<<<< HEAD
               padding: isMobile ? '16px' : '24px 32px',
+=======
+              padding: '24px 32px',
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
               borderBottom: `1px solid ${colors.tableBorder}`,
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               background: colors.headerBg,
               position: 'relative',
+<<<<<<< HEAD
               flexWrap: 'wrap',
               gap: 16,
             }}>
@@ -3327,6 +3459,130 @@ const App: React.FC = () => {
             </div>
           </div>
           </div>
+=======
+            }}>
+              <div>
+                <h2 style={{ fontSize: '20px', fontWeight: 500, color: colors.textPrimary }}>Региональные данные</h2>
+                <p style={{ fontSize: '14px', color: colors.textMuted, fontWeight: 300, marginTop: 4 }}>
+                  Поддерживается вставка столбца из Excel
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: 12 }}>
+                <button onClick={handleCopyData} style={getButtonStyle('secondary')}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Скопировать таблицу
+                </button>
+                <button onClick={handleCopyValues} style={{ ...getButtonStyle('secondary'), color: colors.textMuted }}>
+                  Скопировать значения
+                </button>
+                <button onClick={handlePasteValues} style={getButtonStyle('primary')}>
+                  Вставить значения
+                </button>
+              </div>
+            </div>
+
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
+                <thead style={{ background: colors.tableHeaderBg, borderBottom: `1px solid ${colors.tableBorder}` }}>
+                  <tr>
+                    {['№', 'Субъект РФ', 'Значение', 'Округ'].map((header, i) => (
+                      <th key={i} style={{
+                        padding: '16px 32px',
+                        fontSize: 11,
+                        fontWeight: 600,
+                        color: colors.textMuted,
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                      }}>
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {REGIONS_DATA.map((region) => (
+                    <tr
+                      key={region.id}
+                      id={`region-row-${region.id}`}
+                      style={{
+                        borderBottom: `1px solid ${colors.tableBorder}`,
+                        transition: 'background 0.2s',
+                        cursor: 'pointer',
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = colors.tableRowHover}
+                      onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                    >
+                      <td style={{ padding: '16px 32px', fontSize: 14, color: colors.textMuted, fontWeight: 300 }}>{region.id}</td>
+                      <td 
+                        style={{ 
+                          padding: '16px 32px', 
+                          fontSize: 14, 
+                          fontWeight: 500, 
+                          color: colors.textPrimary,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => scrollToMapAndHighlightRegion(region.id)}
+                        title="Нажмите, чтобы показать на карте"
+                      >
+                        <span style={{
+                          borderBottom: `1px dashed ${colors.textMuted}`,
+                          paddingBottom: 2,
+                          transition: 'border-color 0.2s',
+                        }}>
+                          {region.name}
+                        </span>
+                      </td>
+                      <td style={{ padding: '16px 32px' }}>
+                        <input
+                          ref={el => { inputRefs.current[region.id] = el; }}
+                          type="number"
+                          value={data[region.id] || ''}
+                          onChange={(e) => handleValueChange(region.id, e.target.value)}
+                          onPaste={(e) => handlePaste(e, region.id)}
+                          onWheel={(e) => e.currentTarget.blur()}
+                          onKeyDown={(e) => handleKeyDown(e, region.id)}
+                          placeholder="—"
+                          style={getInputStyle()}
+                          onFocus={e => {
+                            if (currentTheme === 'material') {
+                              e.currentTarget.style.boxShadow = `inset 0 0 0 2px ${colors.inputFocus}`;
+                            } else {
+                              e.currentTarget.style.borderColor = colors.inputFocus;
+                            }
+                          }}
+                          onBlur={e => {
+                            if (currentTheme === 'material') {
+                              e.currentTarget.style.boxShadow = `inset 0 0 0 1px ${colors.inputBorder}`;
+                            } else {
+                              e.currentTarget.style.borderColor = colors.inputBorder;
+                            }
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '16px 32px', whiteSpace: 'nowrap' }}>
+                        <span style={{
+                          fontSize: 10,
+                          fontWeight: 600,
+                          color: colors.badgeText,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                          background: colors.badgeBg,
+                          padding: currentTheme === 'material' ? '6px 12px' : '4px 8px',
+                          borderRadius: currentTheme === 'material' ? '8px' : '6px',
+                        }}>
+                          {region.district}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
         </div>
 
         <div 
@@ -3347,7 +3603,11 @@ const App: React.FC = () => {
           }}
         ></div>
         
+<<<<<<< HEAD
         {/* "Back to Map" floating button - hidden on mobile, visibility controlled by CSS */}
+=======
+        {/* "Back to Map" floating button - always rendered, visibility controlled by CSS */}
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="back-to-map-btn"
@@ -3355,7 +3615,11 @@ const App: React.FC = () => {
             position: 'fixed',
             bottom: 40,
             right: 40,
+<<<<<<< HEAD
             display: isMobile ? 'none' : 'flex',
+=======
+            display: 'flex',
+>>>>>>> 78b78d79d5f04e00217ac1cb29e3145efe4c5daa
             alignItems: 'center',
             gap: 12,
             padding: currentTheme === 'material' ? '16px 28px' : '16px 24px',
